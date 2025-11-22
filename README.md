@@ -2,6 +2,40 @@
 
 A full-stack bus ticket booking application featuring intelligent bus provider information retrieval using Retrieval-Augmented Generation (RAG) powered by RAG & OpenAI.
 
+### Basic Operations UI
+
+<table>
+  <tr>
+    <td><img src="frontend/Search Buses.png" alt="Search Buses"/></td>
+    <td><img src="frontend/View Bookings.png" alt="View Bookings"/></td>
+  </tr>
+  <tr>
+    <td align="center">Search Buses</td>
+    <td align="center">View Bookings</td>
+  </tr>
+</table>
+
+### Chatbot Interfaces
+
+<table>
+  <tr>
+    <td><img src="frontend/Provider Details.png" alt="Provider Details"/></td>
+  </tr>
+  <tr>
+    <td align="center">Provider Details</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td><img src="frontend/Specific Query.png" alt="Specific Query"/></td>
+    <td><img src="frontend/Detailed Query 2.png" alt="Detailed Query"/></td>
+  </tr>
+  <tr>
+    <td align="center">Specific Query</td>
+    <td align="center">Detailed Query</td>
+  </tr>
+</table>
+
 ## Features
 
 - 🔍 **Smart Bus Search**: Search buses by route and price
