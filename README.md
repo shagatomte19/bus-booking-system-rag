@@ -90,7 +90,7 @@ bus-booking-system/
 │   │   ├── database.py   # Database connection
 │   │   ├── models.py     # SQLAlchemy models
 │   │   ├── schemas.py    # Pydantic schemas
-│   │   ├── query_route.py
+│   │   ├── query_router.py
 │   │   ├── rag_pipeline.py  # RAG implementation
 │   │   ├── seed_data.py  # Database seeding
 │   │   └── routes/       # API routes
@@ -138,16 +138,16 @@ bus-booking-system/
 The **enhanced RAG (Retrieval-Augmented Generation) pipeline** works with a hybrid approach:
 
 ### 1. **Query Classification**
-The system uses Claude AI to automatically classify user questions into three types:
+The system uses keyword-based classification to classify user questions into three types:
 - **Route Search**: Questions about bus availability, routes, prices
 - **Provider Info**: Questions about bus company details, contact information
 - **General**: Greetings and general inquiries
 
 ### 2. **Route Search (Database RAG)**
 For route-related questions:
-1. **Parameter Extraction**: Claude extracts search parameters (origin, destination, max price) from natural language
+1. **Parameter Extraction**: LLM extracts search parameters (origin, destination, max price) from natural language
 2. **Database Query**: System searches PostgreSQL for matching buses
-3. **Natural Response**: Claude generates a conversational response with the results
+3. **Natural Response**: LLM generates a conversational response with the results
 
 Example: "Are there any buses from Dhaka to Rajshahi under 500 taka?"
 - Extracts: `{from: "Dhaka", to: "Rajshahi", max_price: 500}`
@@ -159,12 +159,113 @@ For provider-related questions:
 1. **Document Indexing**: Privacy policy documents are chunked and embedded
 2. **Storage**: Embeddings stored in ChromaDB with metadata
 3. **Retrieval**: User query is embedded and similar documents retrieved
-4. **Generation**: Claude generates natural response using retrieved context
+4. **Generation**: LLM generates natural response using retrieved context
 
 Example: "What are the contact details of Hanif Bus?"
 - Searches ChromaDB for Hanif documents
 - Retrieves relevant chunks
 - Returns: "Hanif can be reached at Customer Support: 16460..."
+
+# 🤖 Hybrid RAG System Documentation
+
+The Bus Booking System uses an **hybrid RAG (Retrieval-Augmented Generation)** approach that intelligently handles two types of queries:
+
+1. **Database Queries**: Route searches, price comparisons, availability checks
+2. **Document Queries**: Provider information, contact details, policies
+
+## Architecture
+
+```
+User Question
+     ↓
+┌────────────────────┐
+│  Query Classifier  │ ← Keyword-based Classification
+└────────────────────┘
+     ↓
+     ├─→ Route Search? → PostgreSQL Database
+     │                    ↓
+     │                  Extract params (from, to, price)
+     │                    ↓
+     │                  Query routes & prices
+     │                    ↓
+     │                  LLM generates natural response
+     │
+     └─→ Provider Info? → ChromaDB Vector Database
+                           ↓
+                         Semantic search in documents
+                           ↓
+                         Retrieve relevant chunks
+                           ↓
+                         LLM generates response with citations
+```
+
+## Components
+
+### 1. Query Router (`query_router.py`)
+
+**Purpose**: Central intelligence that routes queries to appropriate handlers
+
+**Key Methods**:
+
+- `classify_query(question)`: Keyword-based Classification
+- `search_routes(question, db)`: Extracts parameters and queries database
+- `answer_question(question, db)`: Main entry point that orchestrates the response
+
+### 2. Route Search (Database RAG)
+
+**Flow**:
+```python
+Question: "Are there any buses from Dhaka to Rajshahi under 500 taka?"
+    ↓
+Parameter Extraction:
+{
+  "from_district": "Dhaka",
+  "to_district": "Rajshahi", 
+  "max_price": 500
+}
+    ↓
+Database Query:
+SELECT providers, routes, prices
+WHERE from = 'Dhaka' 
+  AND to = 'Rajshahi'
+  AND price <= 500
+    ↓
+Results:
+[
+  {provider: "Soudia", price: 480},
+  {provider: "Hanif", price: 500}
+]
+    ↓
+Natural Language Generation (Using LLM):
+"Yes! I found 2 buses from Dhaka to Rajshahi under 500 taka:
+1. Soudia - Shah Makhdum stop, ৳480
+2. Hanif - Shah Makhdum stop, ৳500"
+```
+
+### 3. Provider Info Search (Document RAG)
+
+**Flow**:
+```python
+Question: "What are the contact details of Hanif Bus?"
+    ↓
+Semantic Search in ChromaDB:
+- Embed question
+- Find similar document chunks
+- Retrieve top 3 matches
+    ↓
+Retrieved Context:
+"Hanif is committed to protecting privacy...
+Official Address: Gabtoli / Mirpur region, Dhaka
+Contact Information: Customer Support: 16460, Counter: 01713-049540"
+    ↓
+Generate Response (Using LLM):
+"Hanif Bus can be reached at:
+📞 Customer Support: 16460
+📱 Counter: 01713-049540
+📍 Address: Gabtoli / Mirpur region, Dhaka"
+
+Sources: [Hanif]
+```
 
 ### 4. **Benefits of Hybrid Approach**
 - ✅ Answers both structured data queries (routes, prices) and unstructured data queries (policies, contact info)
