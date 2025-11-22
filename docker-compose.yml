@@ -37,7 +37,7 @@ services:
       - DATABASE_URL=postgresql://bususer:buspass123@postgres:5432/bus_booking
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
-      - xAI_API_KEY=${xAI_API_KEY}
+      - llm_API_KEY=${llm_API_KEY}
     depends_on:
       postgres:
         condition: service_healthy
