@@ -1,0 +1,103 @@
+{
+  "districts": [
+    {
+      "name": "Dhaka",
+      "dropping_points": [
+        {"name": "Gabtoli", "price": 500},
+        {"name": "Mohakhali", "price": 550},
+        {"name": "Sayedabad", "price": 520}
+      ]
+    },
+    {
+      "name": "Chattogram",
+      "dropping_points": [
+        {"name": "Muradpur", "price": 600},
+        {"name": "Agrabad", "price": 650},
+        {"name": "Kaptai", "price": 620}
+      ]
+    },
+    {
+      "name": "Khulna",
+      "dropping_points": [
+        {"name": "Daulatpur", "price": 400},
+        {"name": "Khalishpur", "price": 420}
+      ]
+    },
+    {
+      "name": "Rajshahi",
+      "dropping_points": [
+        {"name": "Shah Makhdum", "price": 480},
+        {"name": "Bagha", "price": 500}
+      ]
+    },
+    {
+      "name": "Sylhet",
+      "dropping_points": [
+        {"name": "Zindabazar", "price": 700},
+        {"name": "Bimanbandar", "price": 720}
+      ]
+    },
+    {
+      "name": "Barishal",
+      "dropping_points": [
+        {"name": "Khanjahan", "price": 450},
+        {"name": "Bakerganj", "price": 470}
+      ]
+    },
+    {
+      "name": "Rangpur",
+      "dropping_points": [
+        {"name": "Kachari", "price": 480},
+        {"name": "Cantonment", "price": 500}
+      ]
+    },
+    {
+      "name": "Mymensingh",
+      "dropping_points": [
+        {"name": "Shahbazpur", "price": 460},
+        {"name": "Kewatkhali", "price": 480}
+      ]
+    },
+    {
+      "name": "Comilla",
+      "dropping_points": [
+        {"name": "Kotbari", "price": 530},
+        {"name": "Nangalkot", "price": 550}
+      ]
+    },
+    {
+      "name": "Bogra",
+      "dropping_points": [
+        {"name": "Shahjahanpur", "price": 470},
+        {"name": "Sariakandi", "price": 490}
+      ]
+    }
+  ],
+  "bus_providers": [
+    {
+      "name": "Desh Travel",
+      "coverage_districts": ["Dhaka", "Chattogram", "Sylhet", "Rangpur"]
+    },
+    {
+      "name": "Hanif",
+      "coverage_districts": ["Dhaka", "Khulna", "Mymensingh", "Comilla"]
+    },
+    {
+      "name": "Ena",
+      "coverage_districts": ["Chattogram", "Sylhet", "Barishal", "Bogra"]
+    },
+    {
+      "name": "Green Line",
+      "coverage_districts": ["Khulna", "Rajshahi", "Mymensingh", "Rangpur"]
+    },
+    {
+      "name": "Soudia",
+      "coverage_districts": ["Dhaka", "Rajshahi", "Barishal", "Comilla"]
+    },
+    {
+      "name": "Shyamoli",
+      "coverage_districts": ["Chattogram", "Khulna", "Sylhet", "Bogra"]
+    }
+  ]
+}
+

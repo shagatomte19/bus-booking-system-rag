@@ -1,0 +1,66 @@
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: bus_booking_db
+    environment:
+      POSTGRES_DB: bus_booking
+      POSTGRES_USER: bususer
+      POSTGRES_PASSWORD: buspass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bususer -d bus_booking"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: bus_booking_chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadb_data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+
+  backend:
+    build: ./backend
+    container_name: bus_booking_backend
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=postgresql://bususer:buspass123@postgres:5432/bus_booking
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - xAI_API_KEY=${xAI_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+    volumes:
+      - ./backend:/app
+    command: sh -c "sleep 10 && python -m app.seed_data && uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
+
+  frontend:
+    build: ./frontend
+    container_name: bus_booking_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8001
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+  chromadb_data:
