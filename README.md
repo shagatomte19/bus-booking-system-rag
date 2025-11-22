@@ -29,7 +29,7 @@ A full-stack bus ticket booking application featuring intelligent bus provider i
 ## Prerequisites
 
 - Docker and Docker Compose installed
-- OpenAI API key (get from [https://console.anthropic.com/](https://openrouter.ai/openai/gpt-oss-20b:free))
+- OpenAI API key (get from [https://openrouter.ai/](https://openrouter.ai/openai/gpt-oss-20b:free))
 
 ## Setup Instructions
 
